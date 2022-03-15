@@ -1,0 +1,16 @@
+{
+	"name": "05_web",
+	"version": "1.0.0",
+	"main": "index.js",
+	"license": "MIT",
+	"dependencies": {
+		"axios": "^0.21.1"
+	},
+	"scripts": {
+		"start:db": "json-server -w db.json",
+		"start:parcel": "parcel index.html"
+	},
+	"devDependencies": {
+		"typescript": "^4.3.5"
+	}
+}

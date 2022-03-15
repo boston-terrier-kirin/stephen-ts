@@ -1,0 +1,12 @@
+{
+  "name": "02_maps",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Kohei Matsumoto <kohei.matsumoto@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@types/faker": "^5.5.7",
+    "@types/google.maps": "^3.45.6",
+    "faker": "^5.5.3"
+  }
+}
