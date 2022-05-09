@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useActions } from './store/todos/todos.hook';
 import { selectTodos } from './store/todos/todos.selector';
@@ -21,6 +20,7 @@ const App = () => {
   //
   //   // ■解決２
   //   // しかしながら、fetchTodosをdependenciesに追加すると無限ループになる。
+  //   // useCallbackで回避を試みたが失敗。
   //   fetchTodos();
   // }, []);
 
