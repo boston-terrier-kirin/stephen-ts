@@ -1,12 +1,8 @@
 import ReactDOM from 'react-dom/client';
-import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
-import thunk from 'redux-thunk';
+import { store } from './store/store';
 
 import App from './App';
-import { reducers } from './reducers';
-
-const store = createStore(reducers, applyMiddleware(thunk));
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
