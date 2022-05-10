@@ -1,3 +1,4 @@
+import { useCallback, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useActions } from './store/todos/todos.hook';
 import { selectTodos } from './store/todos/todos.selector';
@@ -23,6 +24,15 @@ const App = () => {
   //   // useCallbackで回避を試みたが失敗。
   //   fetchTodos();
   // }, []);
+
+  // ■失敗例
+  // const cb = useCallback(() => {
+  //   return fetchTodos();
+  // }, [fetchTodos]);
+  //
+  // useEffect(() => {
+  //   cb();
+  // }, [cb]);
 
   const onFetch = () => {
     fetchTodos();
