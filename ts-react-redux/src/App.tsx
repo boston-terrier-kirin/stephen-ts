@@ -1,6 +1,6 @@
-import { useCallback, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { useActions } from './store/todos/todos.hook';
+import { useActions, useActionsV2 } from './store/todos/todos.hook';
 import { selectTodos } from './store/todos/todos.selector';
 
 const App = () => {
@@ -13,6 +13,7 @@ const App = () => {
   //   // TS2345: Argument of type '(dispatch: Dispatch) => Promise<void>' is not assignable to parameter of type 'AnyAction'.
   //   // Property 'type' is missing in type '(dispatch: Dispatch) => Promise<void>' but required in type 'AnyAction'.
   //   // ⇒Thnukを使っているので、Actionをそのままリターンしていないのが原因のはず。
+  //   // dispatchへのパラメータは、{type:xxx, payload:xxx} or {type:xxx} なのに、typeすらないと怒っている。
   //
   //   // ■解決１
   //   // https://qiita.com/hiromiya0628/items/bd48bc4b0e1ba0506a97
@@ -26,6 +27,7 @@ const App = () => {
   // }, []);
 
   // ■失敗例
+  // これは無理がある。useCallbackの依存関係にfetchTodos自体が入っているので、矛盾している。
   // const cb = useCallback(() => {
   //   return fetchTodos();
   // }, [fetchTodos]);
@@ -33,6 +35,14 @@ const App = () => {
   // useEffect(() => {
   //   cb();
   // }, [cb]);
+
+  // ■これでいったん解決
+  // useActionV2で、bindActionCreatorsをメモ化する。
+  // actionsはメモかされているので、依存関係に入れても大丈夫。
+  const actions = useActionsV2();
+  useEffect(() => {
+    actions().fetchTodos();
+  }, [actions]);
 
   const onFetch = () => {
     fetchTodos();
