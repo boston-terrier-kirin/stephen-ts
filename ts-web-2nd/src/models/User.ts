@@ -1,7 +1,7 @@
-import { AxiosResponse } from 'axios';
+import { Model } from './Model';
 import { Attributes } from './Attributes';
 import { Eventing } from './Eventing';
-import { Sync } from './Sync';
+import { ApiSync } from './ApiSync';
 
 const rootUrl = 'http://localhost:3001/users';
 
@@ -11,57 +11,21 @@ export interface UserProps {
   age?: number;
 }
 
-export class User {
-  public events: Eventing = new Eventing();
-  public sync: Sync<UserProps> = new Sync(rootUrl);
-  public attributes: Attributes<UserProps>;
-
-  constructor(attrs: UserProps) {
-    this.attributes = new Attributes(attrs);
-  }
-
-  get on() {
-    /**
-     * ここを getter にすることで、使う側は、user.on("click", ()=> console.log("do something")) にすることができる。
-     */
-    return this.events.on;
-  }
-
-  get trigger() {
-    return this.events.trigger;
-  }
-
-  get get() {
-    return this.attributes.get;
-  }
-
-  set(update: UserProps) {
-    this.attributes.set(update);
-    this.events.trigger('change');
-  }
-
-  fetch(): void {
-    // this.getはgetterのgetを呼んでいる。
-    const id = this.get('id');
-
-    if (typeof id !== 'number') {
-      throw new Error('Cannot fetch without an id');
-    }
-
-    this.sync.fetch(id).then((res: AxiosResponse): void => {
-      this.set(res.data);
-    });
-  }
-
-  save(): void {
-    const attrs = this.attributes.getAll();
-    this.sync
-      .save(attrs)
-      .then((res: AxiosResponse): void => {
-        this.events.trigger('save');
-      })
-      .catch(() => {
-        this.events.trigger('error');
-      });
+export class User extends Model<UserProps> {
+  static buildUser(attrs: UserProps) {
+    return new User(
+      new Attributes<UserProps>(attrs),
+      new Eventing(),
+      new ApiSync<UserProps>(rootUrl)
+    );
   }
 }
+
+/**
+ * User extends Model<UserProps>にする理由
+ * ModelとUserの関係をcompose(delegete)にすると、user.model.fetch になってしまうので、
+ * ModelとUserは継承にする。
+ */
+// const user = User.buildUser({ id: 1 });
+// user.fetch();
+// console.log(user);
