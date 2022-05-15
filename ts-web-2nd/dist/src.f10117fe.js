@@ -149,6 +149,10 @@ function () {
     };
   }
 
+  Attributes.prototype.getAll = function () {
+    return this.data;
+  };
+
   return Attributes;
 }();
 
@@ -4767,6 +4771,17 @@ function () {
     });
   };
 
+  User.prototype.save = function () {
+    var _this = this;
+
+    var attrs = this.attributes.getAll();
+    this.sync.save(attrs).then(function (res) {
+      _this.events.trigger('save');
+    }).catch(function () {
+      _this.events.trigger('error');
+    });
+  };
+
   return User;
 }();
 
@@ -4786,7 +4801,14 @@ var user = new User_1.User({
 user.on('change', function () {
   console.log(user);
 });
+user.on('save', function () {
+  console.log(user);
+});
 user.fetch();
+user.set({
+  age: 35
+});
+user.save();
 },{"./models/User":"src/models/User.ts"}],"C:/Users/kohei/AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';

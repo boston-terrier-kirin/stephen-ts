@@ -52,4 +52,16 @@ export class User {
       this.set(res.data);
     });
   }
+
+  save(): void {
+    const attrs = this.attributes.getAll();
+    this.sync
+      .save(attrs)
+      .then((res: AxiosResponse): void => {
+        this.events.trigger('save');
+      })
+      .catch(() => {
+        this.events.trigger('error');
+      });
+  }
 }
