@@ -6,7 +6,7 @@ interface HasId {
 
 /**
  * Generic Constraints
- * Sync<T extends HasId>で、
+ * ApiSync<T extends HasId>で、
  * Tはidを持った何かとして定義できる。
  */
 export class ApiSync<T extends HasId> {
