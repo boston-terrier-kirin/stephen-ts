@@ -1,9 +1,12 @@
 import { User } from './models/User';
-import { UserForm } from './views/UserForm';
+import { UserEdit } from './views/UserEdit';
 
 const user = User.buildUser({ name: 'Steph', age: 35 });
 const root = document.getElementById('root');
+
 if (root) {
-  const userForm = new UserForm(root, user);
-  userForm.render();
+  const userEdit = new UserEdit(root, user);
+  userEdit.render();
+
+  console.log(userEdit);
 }
